@@ -1,7 +1,13 @@
+# David Del Grosso
+# 2017/07/20
+# This code collects data 10 times per second from an IMU and prints
+# it to a csv file
+
 from vnpy import *
 import csv
 import datetime
 
+#Change before flight
 file_name = "Data/imu1.csv"
 baudrate = 115200
 

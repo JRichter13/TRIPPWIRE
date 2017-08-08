@@ -1,3 +1,8 @@
+# David Del Grosso
+# 2017/08/03
+# This code reads GPS and temperature sensor data once per second
+# and prints it to a csv file
+
 import csv
 import datetime
 import serial
@@ -65,6 +70,7 @@ try:
 		writer.writerow("")
 		writer.writerow("")
 		writer.writerow("")
+#If not, create one
 except:
 	with open(file_name, 'w') as csv_file:
 		writer = csv.writer(csv_file)
@@ -72,10 +78,12 @@ except:
 
 #Initialize continuous loop
 sec2 = -1
-#GPS = serial.Serial('/dev/ttyAMA0',9600)
 
-#sensor = VnSensor()
-#sensor.connect('/dev/ttyUSB0',9600)
+"""
+GPS = serial.Serial('/dev/ttyAMA0',9600)
+sensor = VnSensor()
+sensor.connect('/dev/ttyUSB0',9600)
+"""
 while(1):
 	final_data = [] #Initialize data list
 	
@@ -88,20 +96,20 @@ while(1):
 	#Only update once per second
 	if sec1 != sec2:
 		try:
-			GPS_data = getGPS()
+			GPS_data = getGPS() #get GPS reading
 		except:
 			print("Fail Outside")
 		#IMU_data = getIMU()
 		try:
-			temp_data1 = getTemp(0x18)
+			temp_data1 = getTemp(0x18) #get Temp 1 reading
 		except:
 			print("Fail Temp")
-			temp_data1 = 20
+			temp_data1 = 20 #set default temp to 20
 		try:
-			temp_data2 = getTemp(0x1F)
+			temp_data2 = getTemp(0x1F) #get Temp 2 reading
 		except:
 			print("Fail Temp2")
-			temp_data2 = 20
+			temp_data2 = 20 #set default temp to 20
 
 		utcstr_array = utcstr.split(' ')
 		datestr = utcstr_array[0]
@@ -122,6 +130,7 @@ while(1):
 		with open(file_name, 'a') as csv_file:
 			writer = csv.writer(csv_file)
 			writer.writerow(final_data)
+	#Set temperature ranges to control heaters
 	if temp_data1 < 10 or temp_data2 < 10:
 		GPIO.output(chan, True)
 	elif temp_data1 < 15 and temp_data2 < 15:
