@@ -24,7 +24,7 @@ def getIMU():
         if sensor.is_connected == True:
                 data = []
                 imu = sensor.read_yaw_pitch_roll_magnetic_acceleration_and_angular_rates()
-                yaw = imu.yaw_pitch_roll.x
+                yaw = imu.yaw_pitch_roll.z
                 pitch = imu.yaw_pitch_roll.y
                 roll = imu.yaw_pitch_roll.x
                 accel = imu.accel
